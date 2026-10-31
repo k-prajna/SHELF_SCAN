@@ -1,0 +1,49 @@
+CREATE TABLE IF NOT EXISTS schema_migrations (
+    version VARCHAR(64) PRIMARY KEY,
+    applied_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(20) NOT NULL DEFAULT 'user';
+ALTER TABLE users ADD COLUMN IF NOT EXISTS verification_attempts INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_attempts INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS last_login_at TIMESTAMPTZ;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS last_active_at TIMESTAMPTZ;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS password_changed_at TIMESTAMPTZ;
+CREATE INDEX IF NOT EXISTS ix_users_last_active_at ON users(last_active_at);
+
+ALTER TABLE books ADD COLUMN IF NOT EXISTS isbn VARCHAR(20);
+ALTER TABLE books ADD COLUMN IF NOT EXISTS average_rating DOUBLE PRECISION;
+ALTER TABLE books ADD COLUMN IF NOT EXISTS ratings_count INTEGER;
+ALTER TABLE books ADD COLUMN IF NOT EXISTS editions JSON;
+ALTER TABLE books ADD COLUMN IF NOT EXISTS retailer_name VARCHAR(120);
+ALTER TABLE books ADD COLUMN IF NOT EXISTS retailer_url TEXT;
+ALTER TABLE books ADD COLUMN IF NOT EXISTS price_amount DOUBLE PRECISION;
+ALTER TABLE books ADD COLUMN IF NOT EXISTS price_currency VARCHAR(8);
+ALTER TABLE books ADD COLUMN IF NOT EXISTS price_updated_at TIMESTAMPTZ;
+ALTER TABLE books ADD COLUMN IF NOT EXISTS metadata_source VARCHAR(30) NOT NULL DEFAULT 'catalog';
+
+CREATE TABLE IF NOT EXISTS login_history (
+    id VARCHAR(36) PRIMARY KEY,
+    user_id VARCHAR(36) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    session_id VARCHAR(36) NOT NULL UNIQUE,
+    login_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    logout_at TIMESTAMPTZ,
+    session_status VARCHAR(20) NOT NULL DEFAULT 'active'
+);
+CREATE INDEX IF NOT EXISTS ix_login_history_user_id ON login_history(user_id);
+CREATE INDEX IF NOT EXISTS ix_login_history_session_id ON login_history(session_id);
+CREATE INDEX IF NOT EXISTS ix_login_history_login_at ON login_history(login_at);
+
+CREATE TABLE IF NOT EXISTS cart_items (
+    id VARCHAR(36) PRIMARY KEY,
+    user_id VARCHAR(36) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    book_id VARCHAR(64) NOT NULL REFERENCES books(id) ON DELETE CASCADE,
+    quantity INTEGER NOT NULL DEFAULT 1,
+    added_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uq_cart_user_book UNIQUE (user_id, book_id)
+);
+CREATE INDEX IF NOT EXISTS ix_cart_items_user_id ON cart_items(user_id);
+CREATE INDEX IF NOT EXISTS ix_cart_items_book_id ON cart_items(book_id);
+
+INSERT INTO schema_migrations(version) VALUES ('001_activity_and_book_commerce')
+ON CONFLICT (version) DO NOTHING;

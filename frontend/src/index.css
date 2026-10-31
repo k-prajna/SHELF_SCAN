@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #20352b;
+  background: #edf2e8;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: #edf2e8;
+  background-image:
+    radial-gradient(ellipse 44rem 32rem at 8% 8%, rgba(169, 207, 177, 0.43), transparent 72%),
+    radial-gradient(ellipse 42rem 30rem at 87% 5%, rgba(246, 239, 216, 0.72), transparent 70%),
+    radial-gradient(ellipse 48rem 34rem at 94% 58%, rgba(184, 215, 187, 0.35), transparent 72%),
+    radial-gradient(ellipse 42rem 34rem at 7% 78%, rgba(235, 231, 205, 0.47), transparent 74%),
+    radial-gradient(ellipse 58rem 40rem at 49% 45%, rgba(248, 247, 235, 0.76), transparent 78%),
+    linear-gradient(135deg, #e1eee3 0%, #f4f1e6 48%, #e5efe5 100%);
+  background-attachment: fixed;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.app-atmosphere {
+  min-height: 100vh;
+  background: transparent;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+::selection {
+  background: rgba(40, 99, 76, 0.18);
+}
