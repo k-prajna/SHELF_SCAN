@@ -55,11 +55,7 @@ Render supplies `DATABASE_URL`; the blueprint provisions a PostgreSQL database. 
 
 ### Vercel frontend
 
-Set the Vercel project root directory to `frontend` and add:
-
-```text
-VITE_API_BASE_URL=https://shelf-scan.onrender.com
-```
+Set the Vercel project root directory to `frontend`. The Vercel rewrite proxies `/api/*` to the Render service, keeping browser API calls same-origin and avoiding CORS failures. No production `VITE_API_BASE_URL` is needed. For local development, the frontend uses `http://localhost:8000` by default; `frontend/.env.local` may override it.
 
 `frontend/vercel.json` sends app routes to the SPA entry point so page refreshes do not return 404s.
 
