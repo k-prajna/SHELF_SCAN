@@ -16,7 +16,7 @@ services:
       - key: JWT_SECRET_KEY
         generateValue: true
       - key: FRONTEND_URL
-        sync: false
+        value: https://shelf-scan-dmq6.vercel.app
       - key: OPENAI_API_KEY
         sync: false
       - key: GOOGLE_BOOKS_API_KEY

@@ -42,7 +42,7 @@ Do not commit `.env` files or secrets. `.gitignore` excludes local environment f
 
 Create the service from `render.yaml`, then set these secret/host-specific environment variables in Render:
 
-- `FRONTEND_URL` — the deployed Vercel origin (comma-separated origins are supported)
+- `FRONTEND_URL` — the deployed Vercel origin (defaults to `https://shelf-scan-dmq6.vercel.app`; comma-separated origins are supported)
 - `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_USERNAME`, `EMAIL_PASSWORD`, `EMAIL_FROM` — authenticated SMTP delivery
 - `OPENAI_API_KEY` — bookshelf image recognition, the grounded book assistant, and semantic embeddings
 - `OPENAI_CHAT_MODEL` — optional chat model override for the book assistant (default `gpt-4o-mini`)
@@ -58,7 +58,7 @@ Render supplies `DATABASE_URL`; the blueprint provisions a PostgreSQL database. 
 Set the Vercel project root directory to `frontend` and add:
 
 ```text
-VITE_API_BASE_URL=https://<your-render-service>.onrender.com
+VITE_API_BASE_URL=https://shelf-scan.onrender.com
 ```
 
 `frontend/vercel.json` sends app routes to the SPA entry point so page refreshes do not return 404s.

@@ -674,7 +674,11 @@ allowed_origins = {
     for origin in os.getenv("FRONTEND_URL", "http://localhost:5173").split(",")
     if origin.strip()
 }
-allowed_origins.update({"http://localhost:5173", "http://127.0.0.1:5173"})
+allowed_origins.update({
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://shelf-scan-dmq6.vercel.app",
+})
 app.add_middleware(
     CORSMiddleware,
     allow_origins=sorted(allowed_origins),
